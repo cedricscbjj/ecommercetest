@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+
+    <style>
+
+#cart-modal {
+    display: none; /* Masquer la modal par défaut */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Fond semi-transparent */
+  }
+
+
+
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Largeur de la modal */
+    max-width: 400px; /* Largeur maximale de la modal */
+    margin-top: 10%; /* Marge par rapport au haut de l'écran */
+  }
+  #carList {
+      list-style-type: none;
+    }
+
+    </style>
+</head>
+<body>
+    
+
+
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <ul id="cart-list"></ul>
+
+            <input type="text" id="codepromo" name="code promo" placeholder="entrez votre code promo"> code promo<br><br>
+
+
+    
+
+
+            <button onclick="clearCart()">Vider le contenu</button>
+
+        </div>
+    </div>
+
+
+
+    <button onclick="openModal()"> Panier d'achat (<span id="total-count"></span>)  </button>
+
+<br><br><br>
+
+    <button id="renault" onclick="addtocart('Renault')">ajouter une renault</button>
+    <button id="nissan" onclick="addtocart('Nissan')">ajouter une nissan</button>
+    <button id="peugeot" onclick="addtocart('Peugeot')">ajouter une peugeot</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+
+
+var voitureRenault = {
+  nom: "Renault",
+  prix: 2345,
+  vitesseMax: 123,
+  carburant: "Diesel",
+  compteurSelections: 0
+
+};
+
+
+var voitureNissan = {
+  nom: "Nissan",
+  prix: 3303,
+  vitesseMax: 223,
+  carburant: "Diesel",
+  compteurSelections: 0
+
+};
+
+var voiturePeugeot = {
+  nom: "Peugeot",
+  prix: 6660,
+  vitesseMax: 203,
+  carburant: "Gasoil",
+  compteurSelections: 0
+
+};
+
+
+var voituresArray = [voitureRenault, voitureNissan, voiturePeugeot];
+
+//console.log("Nom de la voiture : " + voitureRenault.nom);
+//var prixVoiturePeugeot = voituresArray[2].prix;
+//console.log("Prix de la Peugeot : " + prixVoiturePeugeot + " EUROS");
+
+
+
+function openModal() {
+    var modal = document.getElementById("cart-modal");
+    modal.style.display = "block";
+    console.log("open");
+
+}
+
+
+function closeModal() {
+    var modal = document.getElementById("cart-modal");
+    modal.style.display = "none";
+}
+
+
+/*function addtocartrenault(){
+var detailsrenaultafficher = document.getElementById("cart-list");
+detailsrenaultafficher.innerHTML = "prix de la renault " + voitureRenault.prix ;
+}*/
+
+
+/*function addtocartrenault() {
+      voitureRenault.compteurSelections++;
+      addToCart(voitureRenault);
+    }*/
+
+    var carList = document.getElementById('cart-list');
+    var selectedCars = {};
+    var totalPrix = 0; // Ajout de la variable pour stocker le prix total
+
+
+    function addtocart(carName) {
+      if (!selectedCars[carName]) {
+        selectedCars[carName] = 0;
+      }
+      
+      selectedCars[carName]++;
+      updateCart();
+      updateTotalPrix();
+
+    }
+
+
+
+    function updateTotalPrix() {
+  totalPrix = 0;
+  for (const carName in selectedCars) {
+    const car = voituresArray.find(v => v.nom === carName);
+    if (car) {
+      totalPrix += car.prix * selectedCars[carName];
+    }
+  }
+  console.log("Prix total: " + totalPrix);
+  // Mettez à jour ici l'affichage du prix total dans votre interface utilisateur si nécessaire
+}
+
+
+
+    
+    function updateCart() {
+      carList.innerHTML = "";
+      for (const carName in selectedCars) {
+        var listItem = document.createElement('li');
+        listItem.textContent = carName + " - Quantité choisis: " + selectedCars[carName];
+        carList.appendChild(listItem);
+      }
+    }
+
+
+
+    function clearCart() {
+
+        selectedCars = {};
+        updateCart();
+document.getElementById('cart-modal').style.display = 'none';
+
+//var totalItems = obj.totalCount();
+document.getElementById('total-count').innerHTML = '0';
+
+
+//console.log("Nombre total d'articles dans le panier : " + totalItems);
+
+
+
+}
+
+
+
+
+/*function incrementerCompteur() {
+  voitureRenault.compteurSelections++;
+  compteurDiv.innerHTML = "Nombre de sélections de la Renault : " + voitureRenault.compteurSelections;
+}*/
+
+
+
+    </script>
+</body>
+</html>
